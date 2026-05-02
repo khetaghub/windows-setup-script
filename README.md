@@ -1,4 +1,4 @@
-# Setup Script (winget + PowerShell)
+# Windows Setup Script
 
 ## Описание
 

@@ -13,7 +13,7 @@ if (-not $isAdmin) {
     Write-Host "❌ Скрипт нужно запускать от имени администратора!" -ForegroundColor Red
     Write-Host ""
     Write-Host "Решение:" -ForegroundColor Yellow
-    Write-Host "ПКМ по install.bat → 'Запуск от имени администратора'"
+    Write-Host "ПКМ по setup.bat → 'Запуск от имени администратора'"
     Write-Host ""
 
     exit
@@ -31,6 +31,27 @@ if (-not $wingetExists) {
 
     exit
 }
+
+# -----------------------------------------------------------------------------
+# Настройки Проводника: показывать расширения и скрытые файлы
+# -----------------------------------------------------------------------------
+
+Write-Host "Настройка Проводника Windows..."
+
+$explorerAdvanced = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+
+# Показывать скрытые файлы и папки
+Set-ItemProperty -Path $explorerAdvanced -Name Hidden -Value 1
+
+# Показывать расширения файлов
+Set-ItemProperty -Path $explorerAdvanced -Name HideFileExt -Value 0
+
+# Перезапуск Проводника, чтобы настройки применились сразу
+Stop-Process -Name explorer -ErrorAction SilentlyContinue
+Start-Sleep -Milliseconds 500
+Start-Process explorer.exe
+
+Write-Host "Настройки Проводника применены.`n"
 
 # -----------------------------------------------------------------------------
 # Вспомогательные функции
